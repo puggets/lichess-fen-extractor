@@ -1,0 +1,27 @@
+{
+  "manifest_version": 3,
+  "name": "Lichess FEN Extractor",
+  "version": "1.0",
+
+  "description": "Extract FEN from lichess.",
+
+  "icons": {
+    "48": "icons/icon_48.png"
+  },
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "lichess_fen_extractor@mozilla.org",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["*://*.lichess.org/*"],
+      "js": ["script.js"]
+    }
+  ]
+}
