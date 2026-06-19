@@ -79,8 +79,6 @@ function getSquare(transform) {
     const coords = parseTranslate(transform);
     const coordX = coords.x / boardDim * 8 + 1;
     const coordY = coords.y / boardDim * 8 + 1;
-    // console.log("coordX: ", coordX)
-    // console.log("coordY: ", coordY)
     return getFile(coordX) + getRank(coordY);
 }
 function getColor(classString) {
@@ -120,22 +118,13 @@ function getFen() {
     board?.querySelectorAll("piece").forEach((el) => {
         const fenPiece = getFenPiece(el.className);
         const square = getSquare(el.style.transform);
-        // console.log(el);
-        // console.log(el.className);
-        // console.log("fen piece : ", fenPiece);
-        // console.log("square: ", square);
         boardState[square] = fenPiece;
-        // console.log("--- board state", boardState)
     });
-    // console.log("board state", boardState)
     squares.forEach((rank, i) => {
         let countEmpty = 0;
         rank.forEach((square, j) => {
             const piece = boardState[square];
             const nextPiece = boardState[squares[i]?.[j + 1] ?? ""] ?? "";
-            // console.log("square : ", square)
-            // console.log("piece: ", piece)
-            // console.log("nextPiece: ", nextPiece)
             if (piece) {
                 fen += piece;
             }
@@ -147,8 +136,6 @@ function getFen() {
                 fen += countEmpty.toString();
                 countEmpty = 0;
             }
-            // console.log("countEmpty: ", countEmpty)
-            // console.log("----", fen)
         });
         if (countEmpty)
             fen += countEmpty.toString();
@@ -157,16 +144,5 @@ function getFen() {
     });
     return fen;
 }
-console.log("------------------------------------------------------------");
-// console.log("board height: ", boardDim);
-// console.log("isFlip: ", isFlip);
-console.log("fen debug: ", getFen());
-// debug print
-// const board = document.querySelector<HTMLElement>("cg-board");
-// board?.querySelectorAll<HTMLElement>("piece").forEach((el) => {
-//   console.log(el);
-//   console.log(el.className);
-//   console.log("fen piece : ", getFenPiece(el.className));
-//   console.log("square: ", getSquare(el.style.transform));
-// });
+console.log("fen:", getFen());
 //# sourceMappingURL=script.js.map
