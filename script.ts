@@ -157,3 +157,36 @@ function getFen() {
 }
 
 console.log("fen:", getFen())
+// Create button
+const fenButton = document.createElement("button");
+fenButton.textContent = "Get FEN";
+fenButton.style.backgroundColor = "rgb(36, 34, 30)";
+fenButton.style.border = "1px solid hsl(0, 0%, 25%)";
+fenButton.style.borderRadius = "7px";
+fenButton.style.position = "fixed";
+fenButton.style.top = "10px";
+fenButton.style.right = "10px";
+fenButton.style.zIndex = "99999";
+fenButton.style.padding = "8px 12px";
+fenButton.style.cursor = "pointer";
+
+// Create output area
+const fenOutput = document.createElement("textarea");
+fenOutput.readOnly = true;
+fenOutput.style.position = "fixed";
+fenOutput.style.top = "50px";
+fenOutput.style.right = "10px";
+fenOutput.style.width = "400px";
+fenOutput.style.height = "80px";
+fenOutput.style.zIndex = "99999";
+
+fenButton.addEventListener("click", () => {
+  const fen = getFen();
+  fenOutput.value = fen;
+
+  // copy to clipboard
+  navigator.clipboard.writeText(fen).catch(() => {});
+});
+
+document.body.appendChild(fenButton);
+document.body.appendChild(fenOutput);
