@@ -110,14 +110,14 @@ function getFenPiece(classString) {
             return "";
     }
 }
-function getFen() {
+function getFen(isFlip) {
     let fen = "";
     const boardContainer = document.querySelector("cg-container");
     const boardDim = parsePx(boardContainer?.style.width ?? "");
     const coords = document.querySelector("coords");
-    const isFlip = getFlipState(coords?.className ?? "");
-    console.log("coords?.className", coords?.className);
-    console.log("isFlip", isFlip);
+    // const isFlip = getFlipState(coords?.className ?? "");
+    // console.log("coords?.className", coords?.className)
+    // console.log("isFlip", isFlip)
     const boardState = {};
     const board = document.querySelector("cg-board");
     board?.querySelectorAll("piece").forEach((el) => {
@@ -153,7 +153,12 @@ function getFen() {
 }
 browser.runtime.onMessage.addListener((message) => {
     if (message.type === "GET_FEN") {
-        return Promise.resolve({ fen: getFen() });
+        return Promise.resolve({ fen: getFen(false) });
+    }
+});
+browser.runtime.onMessage.addListener((message) => {
+    if (message.type === "GET_FLIP_FEN") {
+        return Promise.resolve({ fen: getFen(true) });
     }
 });
 //# sourceMappingURL=script.js.map
