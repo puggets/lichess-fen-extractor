@@ -1,8 +1,4 @@
 "use strict";
-const boardContainer = document.querySelector("cg-container");
-const boardDim = parsePx(boardContainer?.style.width ?? "");
-const coords = document.querySelector("coords");
-const isFlip = getFlipState(coords?.className ?? "");
 const squares = [
     ["a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"],
     ["a7", "b7", "c7", "d7", "e7", "f7", "g7", "h7"],
@@ -29,9 +25,9 @@ function parseTranslate(transform) {
 }
 function getFlipState(coords) {
     const rank = coords.split(" ")[1]?.trim();
-    return rank === "rank1" ? false : true;
+    return rank === "black" ? true : false;
 }
-function getFile(coordX) {
+function getFile(coordX, isFlip) {
     switch (coordX) {
         case 1:
             return isFlip ? "h" : "a";
@@ -53,7 +49,7 @@ function getFile(coordX) {
             return "";
     }
 }
-function getRank(coordY) {
+function getRank(coordY, isFlip) {
     switch (coordY) {
         case 1:
             return isFlip ? "1" : "8";
@@ -75,15 +71,14 @@ function getRank(coordY) {
             return "";
     }
 }
-function getSquare(transform) {
+function getSquare(transform, boardDim, isFlip) {
     const coords = parseTranslate(transform);
     const coordX = Math.round((coords.x / boardDim) * 8 + 1);
     const coordY = Math.round((coords.y / boardDim) * 8 + 1);
     // console.log(transform)
-    // console.log(coords)
     // console.log(coordX)
     // console.log(coordY)
-    return getFile(coordX) + getRank(coordY);
+    return getFile(coordX, isFlip) + getRank(coordY, isFlip);
 }
 function getColor(classString) {
     const values = classString.split(" ");
@@ -117,17 +112,25 @@ function getFenPiece(classString) {
 }
 function getFen() {
     let fen = "";
+    const boardContainer = document.querySelector("cg-container");
+    const boardDim = parsePx(boardContainer?.style.width ?? "");
+    const coords = document.querySelector("coords");
+    const isFlip = getFlipState(coords?.className ?? "");
+    console.log("coords?.className", coords?.className);
+    console.log("isFlip", isFlip);
     const boardState = {};
     const board = document.querySelector("cg-board");
     board?.querySelectorAll("piece").forEach((el) => {
         const fenPiece = getFenPiece(el.className);
-        const square = getSquare(el.style.transform);
+        const square = getSquare(el.style.transform, boardDim, isFlip);
         boardState[square] = fenPiece;
     });
     squares.forEach((rank, i) => {
         let countEmpty = 0;
         rank.forEach((square, j) => {
+            console.log("square", square);
             const piece = boardState[square];
+            console.log("square", piece);
             const nextPiece = boardState[squares[i]?.[j + 1] ?? ""] ?? "";
             if (piece) {
                 fen += piece;
