@@ -81,10 +81,15 @@ function getRank(coordY: number): string {
   }
 }
 
+
 function getSquare(transform: string): string {
   const coords = parseTranslate(transform);
-  const coordX = coords.x/boardDim * 8 + 1;
-  const coordY = coords.y/boardDim * 8 + 1;
+  const coordX = Math.round((coords.x / boardDim) * 8 + 1);
+  const coordY = Math.round((coords.y / boardDim) * 8 + 1);
+  // console.log(transform)
+  // console.log(coords)
+  // console.log(coordX)
+  // console.log(coordY)
   return getFile(coordX) + getRank(coordY);
 }
 
